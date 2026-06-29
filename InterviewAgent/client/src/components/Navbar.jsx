@@ -29,8 +29,11 @@ function Navbar() {
 
         <div className='flex items-center gap-6 relative'>
             <div className='relative'>
-            <button onClick={()=>setShowCreditPopup
-            (!showCreditPopup)} className='flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full text-md hover:bg-gray-200 transition'>
+            <button onClick={()=>{setShowCreditPopup
+            (!showCreditPopup);
+            setShowUserPopup(false)
+            }} 
+            className='flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full text-md hover:bg-gray-200 transition'>
               <BsCoin size={20}/>
               {userData?.credits || 0}
             </button>
@@ -46,10 +49,27 @@ function Navbar() {
           </div>
 
           <div className='relative'>
-            <button className='w-9 h-9 bg-black text-white rounded-full flex items-center justify-center font-semibold'>
-              {userData ? userData?.name.slice(0,1).toUpperCase()
+            <button 
+              onClick={()=>{setShowUserPopup(!showUserPopup);
+                setShowCreditPopup(false)
+              }}
+              className='w-9 h-9 bg-black text-white rounded-full flex items-center justify-center font-semibold'>
+              {userData ? userData?.name.slice(0,1).toUpperCase() 
               : <FaUserAstronaut size={16}/>}
             </button>
+            {showUserPopup && (
+              <div className='absolute right-0 mt-3 w-48 bg-white shadow-xl border border-gray-200 rounded-xl p-4 z-50'>
+                <p className='text-md text-blue-500 font-medium mb-1'>{userData?.name}</p>
+
+                <button onClick={()=>navigate("/history")}
+                className='w-full text-left text-sm py-2 hover:text-black text-gray-600'>
+                  InterView History
+                </button>
+                <button className='w-full text-left text-sm py-2 flex items-center gap-2 text-red-500'>
+                    <HiOutlineLogout size={16}/>Logout
+                </button>
+              </div>
+            )}
           </div>
 
         </div>
