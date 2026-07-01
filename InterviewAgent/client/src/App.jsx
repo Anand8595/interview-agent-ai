@@ -8,15 +8,14 @@ import { setUserData } from './redux/userSlice'
 import { getRedirectResult } from 'firebase/auth'  // ← add
 import { auth } from './firebase' 
 
-const ServerUrl = "http://localhost:8000"; 
+export const ServerUrl = "http://localhost:8000"; 
 
 function App() {
   const dispatch = useDispatch()
   useEffect(()=>{
     const getUser = async () => {
       try {
-        const result = await axios.get(ServerUrl + "/api/user/current-user", 
-        {withCredentials:true})
+        const result = await axios.get(ServerUrl + "/api/user/current-user", {withCredentials:true})
         dispatch(setUserData(result.data))
       } catch (error) {
         console.log(error)

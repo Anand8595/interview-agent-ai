@@ -1,16 +1,37 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { motion } from "motion/react"
 import { BsRobot, BsCoin } from "react-icons/bs";
 import { HiOutlineLogout } from "react-icons/hi";
 import { FaUserAstronaut } from "react-icons/fa";
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import axios from 'axios';
+import { ServerUrl } from '../App.jsx';
+import { setUserData } from '../redux/userSlice';
+import AuthModel from './AuthModel.jsx'
+
 function Navbar() {
   const {userData} = useSelector((state)=>state.user)
   const [showCreditPopup,setShowCreditPopup] = useState(false)
   const [showUserPopup,setShowUserPopup] = useState(false)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [showAuth, setShowAuth] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await axios.get(ServerUrl + "/api/auth/logout",
+        {withCredentials:true})
+        dispatch(setUserData(null))
+        setShowCreditPopup(false)
+        setShowUserPopup(false)
+        navigate("/")
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
   
   return (
     <div className='bg-[#f3f3f3] flex justify-center px-4 pt-6'>
@@ -29,7 +50,12 @@ function Navbar() {
 
         <div className='flex items-center gap-6 relative'>
             <div className='relative'>
-            <button onClick={()=>{setShowCreditPopup
+            <button onClick={()=>{
+              if(!userData){
+                setShowAuth(true)
+                return;
+              }
+              setShowCreditPopup
             (!showCreditPopup);
             setShowUserPopup(false)
             }} 
@@ -50,7 +76,12 @@ function Navbar() {
 
           <div className='relative'>
             <button 
-              onClick={()=>{setShowUserPopup(!showUserPopup);
+              onClick={()=>{
+                if(!userData){
+                setShowAuth(true)
+                return;
+              }
+                setShowUserPopup(!showUserPopup);
                 setShowCreditPopup(false)
               }}
               className='w-9 h-9 bg-black text-white rounded-full flex items-center justify-center font-semibold'>
@@ -65,7 +96,8 @@ function Navbar() {
                 className='w-full text-left text-sm py-2 hover:text-black text-gray-600'>
                   InterView History
                 </button>
-                <button className='w-full text-left text-sm py-2 flex items-center gap-2 text-red-500'>
+                <button onClick={handleLogout} 
+                className='w-full text-left text-sm py-2 flex items-center gap-2 text-red-500'>
                     <HiOutlineLogout size={16}/>Logout
                 </button>
               </div>
@@ -75,6 +107,7 @@ function Navbar() {
         </div>
         
       </motion.div>
+      {showAuth && <AuthModel onClose={()=>setShowAuth(false)}/>}
       
     </div>
   )
