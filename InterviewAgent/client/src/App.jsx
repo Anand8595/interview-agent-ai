@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import { setUserData } from './redux/userSlice'
 import { getRedirectResult } from 'firebase/auth'  // ← add
 import { auth } from './firebase' 
+import InterviewPage from "./pages/InterviewPage";
 
 export const ServerUrl = "http://localhost:8000"; 
 
@@ -29,6 +30,8 @@ function App() {
     <Routes>
       <Route path='/' element={<Home/>}/>
       <Route path='/Auth' element={<Auth/>}/>
+      <Route path='/interview' element={<InterviewPage/>}/>
+
     </Routes>
   )
 }
