@@ -208,3 +208,14 @@ Make questions based on the candidate's role, experience, projects, skills, and 
     return res.status(500).json({ message: error });
   }
 };
+
+export const submitAnswer = async (req,res) => {
+  try {
+    const {interviewId, questionIndex, answer, timeTaken} = req.body
+
+    const interview = await Interview.findById(interviewId)
+    const question = interview.questions[questionIndex]
+  } catch (error) {
+
+  }
+}
