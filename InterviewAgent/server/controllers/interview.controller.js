@@ -78,7 +78,7 @@ Return strictly JSON:
 
 export const generateQuestion = async (req, res) => {
   try {
-    const { role, experience, mode, resumeText, projects, skills } = req.body;
+    let { role, experience, mode, resumeText, projects, skills } = req.body;
 
     role = role?.trim();
     experience = experience?.trim();
@@ -164,6 +164,7 @@ Make questions based on the candidate's role, experience, projects, skills, and 
     const aiResponse = await askAi(messages);
 
     if (!aiResponse || !aiResponse.trim()) {
+      console.log("AI returned empty response.")
       return res.status(500).json({
         message: "AI returned empty response.",
       });
@@ -176,6 +177,7 @@ Make questions based on the candidate's role, experience, projects, skills, and 
       .slice(0, 5);
 
     if (questionsArray.length === 0) {
+      console.log("AI failed to generate questions.")
       return res.status(500).json({
         message: "AI failed to generate questions.",
       });
@@ -204,6 +206,7 @@ Make questions based on the candidate's role, experience, projects, skills, and 
       questions: interview.questions,
     });
   } catch (error) {
+    console.log(error)
     return res
       .status(500)
       .json({ message: `failed to create interview ${error}` });
