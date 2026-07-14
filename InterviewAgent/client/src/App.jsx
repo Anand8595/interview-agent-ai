@@ -8,6 +8,9 @@ import { setUserData } from './redux/userSlice'
 import { getRedirectResult } from 'firebase/auth'  // ← add
 import { auth } from './firebase' 
 import InterviewPage from "./pages/InterviewPage";
+import InterviewHistory from './pages/InterviewHistory'
+import Pricing from './pages/Pricing'
+import InterviewReport from './pages/InterviewReport'
 
 export const ServerUrl = "http://localhost:8000"; 
 
@@ -31,6 +34,9 @@ function App() {
       <Route path='/' element={<Home/>}/>
       <Route path='/Auth' element={<Auth/>}/>
       <Route path='/interview' element={<InterviewPage/>}/>
+      <Route path='/history' element={<InterviewHistory/>}/>
+      <Route path='/pricing' element={<Pricing/>}/>
+      <Route path='/report' element={<InterviewReport/>}/>
 
     </Routes>
   )
