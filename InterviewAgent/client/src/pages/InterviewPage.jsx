@@ -25,8 +25,8 @@ function InterviewPage() {
       )}
       
       {step===3 && (
-        <Step3Report />
-      )}
+  <Step3Report report={interviewData} />
+)}
       
     </div>
   )
