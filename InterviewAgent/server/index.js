@@ -9,9 +9,9 @@ import userRouter from "./routes/user.route.js"
 import interviewRouter from "./routes/interview.route.js"
 import paymentRouter from "./routes/payment.route.js"
 
+
 const app = express()
 
-// 🟢 CORS Configuration अपडेट करा
 const allowedOrigins = [
     "http://localhost:5173",
     process.env.CLIENT_URL,
@@ -19,27 +19,20 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-    origin: function (origin, callback) {
-        // Postman / Server-to-server requests साठी origin undefined असला तरी अलाऊ करा
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error("Not allowed by CORS"));
-        }
-    },
-    credentials: true
-}));
+    origin:allowedOrigins,
+    credentials:true
+}))
 
 app.use(express.json())
 app.use(cookieParser())
 
-app.use("/api/auth", authRouter)
-app.use("/api/user", userRouter)
-app.use("/api/interview", interviewRouter) 
-app.use("/api/payment", paymentRouter) 
+app.use("/api/auth" , authRouter)
+app.use("/api/user" , userRouter)
+app.use("/api/interview" , interviewRouter) 
+app.use("/api/payment" , paymentRouter) 
 
 const PORT = process.env.PORT || 6000
-app.listen(PORT, () => {
+app.listen(PORT , ()=>{
     console.log(`Server running on port ${PORT}`)
     connectDb()
 })
