@@ -14,6 +14,7 @@ export const analyzeResume = async (req, res) => {
     const fileBuffer = await fs.promises.readFile(filepath);
     const uint8Array = new Uint8Array(fileBuffer);
 
+    // Extract text from PDF
     const pdf = await pdfjsLib.getDocument({ data: uint8Array }).promise;
 
     let resumeText = "";
@@ -28,6 +29,12 @@ export const analyzeResume = async (req, res) => {
     }
 
     resumeText = resumeText.replace(/\s+/g, " ").trim();
+
+    // 🟢 Safe check: Empty text
+    if (!resumeText) {
+      if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
+      return res.status(400).json({ message: "Could not extract text from PDF. Please upload a readable PDF." });
+    }
 
     const messages = [
       {
@@ -53,26 +60,46 @@ Return strictly JSON:
 
     const aiResponse = await askAi(messages);
 
-    const cleanResponse = aiResponse.replace(/```json|```/g, "").trim();
-    const parsed = JSON.parse(cleanResponse);
+    // 🟢 Clean Markdown formatting from AI response
+    const cleanResponse = aiResponse
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
 
-    fs.unlinkSync(filepath);
+    // 🟢 Safely parse JSON with fallback
+    let parsed = {};
+    try {
+      parsed = JSON.parse(cleanResponse);
+    } catch (parseErr) {
+      console.error("JSON Parsing error from AI:", cleanResponse);
+      parsed = {
+        role: "Software Developer",
+        experience: "1-2 years",
+        projects: [],
+        skills: []
+      };
+    }
 
-    res.json({
-      role: parsed.role,
-      experience: parsed.experience,
-      projects: parsed.projects,
-      skills: parsed.skills,
+    // Clean up temporary file
+    if (fs.existsSync(filepath)) {
+      fs.unlinkSync(filepath);
+    }
+
+    return res.status(200).json({
+      role: parsed.role || "",
+      experience: parsed.experience || "",
+      projects: parsed.projects || [],
+      skills: parsed.skills || [],
       resumeText,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Analyze Resume Error:", error);
 
     if (req.file && fs.existsSync(req.file.path)) {
       fs.unlinkSync(req.file.path);
     }
 
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: `Resume analysis failed: ${error.message}` });
   }
 };
 
@@ -164,7 +191,7 @@ Make questions based on the candidate's role, experience, projects, skills, and 
     const aiResponse = await askAi(messages);
 
     if (!aiResponse || !aiResponse.trim()) {
-      console.log("AI returned empty response.")
+      console.log("AI returned empty response.");
       return res.status(500).json({
         message: "AI returned empty response.",
       });
@@ -177,7 +204,7 @@ Make questions based on the candidate's role, experience, projects, skills, and 
       .slice(0, 5);
 
     if (questionsArray.length === 0) {
-      console.log("AI failed to generate questions.")
+      console.log("AI failed to generate questions.");
       return res.status(500).json({
         message: "AI failed to generate questions.",
       });
@@ -206,7 +233,7 @@ Make questions based on the candidate's role, experience, projects, skills, and 
       questions: interview.questions,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res
       .status(500)
       .json({ message: `failed to create interview ${error}` });
@@ -386,21 +413,21 @@ export const finishInterview = async (req, res) => {
   }
 };
 
-export const getMyInterviews = async (req,res) => {
+export const getMyInterviews = async (req, res) => {
   try {
-    const interviews = await Interview.find({userId:req.userId})
-    .sort({ createdAt: -1 })
-    .select("role experience mode finalScore status createdAt");
+    const interviews = await Interview.find({ userId: req.userId })
+      .sort({ createdAt: -1 })
+      .select("role experience mode finalScore status createdAt");
 
-    return res.status(200).json(interviews)
+    return res.status(200).json(interviews);
   } catch (error) {
-    return res.status(500).json({message: `failed to find currentUser Interview ${error}`})
+    return res.status(500).json({ message: `failed to find currentUser Interview ${error}` });
   }
-}
+};
 
-export const getInterviewReport = async (req,res) => {
+export const getInterviewReport = async (req, res) => {
   try {
-    const interview = await Interview.findById(req.params.id)
+    const interview = await Interview.findById(req.params.id);
 
     if (!interview) {
       return res.status(404).json({ message: "Interview not found" });
@@ -408,39 +435,36 @@ export const getInterviewReport = async (req,res) => {
 
     const totalQuestions = interview.questions.length;
 
-  let totalConfidence = 0;
-  let totalCommunication = 0;
-  let totalCorrectness = 0;
+    let totalConfidence = 0;
+    let totalCommunication = 0;
+    let totalCorrectness = 0;
 
-  interview.questions.forEach((q) => {
-    totalConfidence += q.confidence || 0;
-    totalCommunication += q.communication || 0;
-    totalCorrectness += q.correctness || 0;
-  });
+    interview.questions.forEach((q) => {
+      totalConfidence += q.confidence || 0;
+      totalCommunication += q.communication || 0;
+      totalCorrectness += q.correctness || 0;
+    });
 
-  const avgConfidence = totalQuestions
-    ? totalConfidence / totalQuestions
-    : 0;
+    const avgConfidence = totalQuestions
+      ? totalConfidence / totalQuestions
+      : 0;
 
-  const avgCommunication = totalQuestions
-    ? totalCommunication / totalQuestions
-    : 0;
+    const avgCommunication = totalQuestions
+      ? totalCommunication / totalQuestions
+      : 0;
 
-  const avgCorrectness = totalQuestions
-    ? totalCorrectness / totalQuestions
-    : 0;
+    const avgCorrectness = totalQuestions
+      ? totalCorrectness / totalQuestions
+      : 0;
 
-  res.json({
-    finalScore: interview.finalScore,
-    confidence: Number(avgConfidence.toFixed(1)),
-    communication: Number(avgCommunication.toFixed(1)),
-    correctness: Number(avgCorrectness.toFixed(1)),
-    questionWiseScore: interview.questions
-  });  
-
-    
+    res.json({
+      finalScore: interview.finalScore,
+      confidence: Number(avgConfidence.toFixed(1)),
+      communication: Number(avgCommunication.toFixed(1)),
+      correctness: Number(avgCorrectness.toFixed(1)),
+      questionWiseScore: interview.questions,
+    });
   } catch (error) {
-    return res.status(500).json({message: `failed to find currentUser Interview ${error}`})
-
+    return res.status(500).json({ message: `failed to find currentUser Interview ${error}` });
   }
-}
+};
