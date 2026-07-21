@@ -24,43 +24,43 @@
 <tr>
 <td align="center">
 <b>🔐 Login Page</b><br>
-<img src="./Login_Page.png" width="350">
+<img src="./Login_Page.png" width="250">
 </td>
 
 <td align="center">
 <b>🏠 Home Page</b><br>
-<img src="./Home_page.png" width="350">
+<img src="./Home_page.png" width="250">
 </td>
 </tr>
 
 <tr>
 <td align="center">
 <b>⚙️ Interview Setup</b><br>
-<img src="./Interview_Setup_Page.png" width="350">
+<img src="./Interview_Setup_Page.png" width="250">
 </td>
 
 <td align="center">
 <b>🎤 AI Interview</b><br>
-<img src="./Interview_Page.png" width="350">
+<img src="./Interview_Page.png" width="250">
 </td>
 </tr>
 
 <tr>
 <td align="center">
 <b>📊 Interview Report</b><br>
-<img src="./Report_page.png" width="350">
+<img src="./Report_page.png" width="250">
 </td>
 
 <td align="center">
 <b>📜 Interview History</b><br>
-<img src="./History_Page.png" width="350">
+<img src="./History_Page.png" width="250">
 </td>
 </tr>
 
 <tr>
 <td align="center" colspan="2">
 <b>💳 Pricing & Payment</b><br>
-<img src="./Payment_Page.png" width="350">
+<img src="./Payment_Page.png" width="250">
 </td>
 </tr>
 </table>
