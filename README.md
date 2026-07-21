@@ -21,46 +21,39 @@
 ## 📸 Screenshots
 
 ### 🔐 Login Page
-
-![Login Page](./screenshots/Login_Page.png)
+![Login Page](./Login_Page.png)
 
 ---
 
 ### 🏠 Home Page
-
-![Home Page](./screenshots/Home_page.png)
+![Home Page](./Home_page.png)
 
 ---
 
 ### ⚙️ Interview Setup
-
-![Interview Setup](./screenshots/Interview_Setup_Page.png)
+![Interview Setup](./Interview_Setup_Page.png)
 
 ---
 
 ### 🎤 AI Interview
-
-![Interview Page](./screenshots/Interview_Page.png)
+![Interview Page](./Interview_Page.png)
 
 ---
 
 ### 📊 Interview Report
-
-![Report Page](./screenshots/Report_page.png)
+![Report Page](./Report_page.png)
 
 ---
 
 ### 📜 Interview History
-
-![History Page](./screenshots/History_Page.png)
+![History Page](./History_Page.png)
 
 ---
 
 ### 💳 Pricing & Payment
+![Payment Page](./Payment_Page.png)
 
-![Payment Page](./screenshots/Payment_Page.png)
-
----
+--- 
 
 # ✨ Features
 
