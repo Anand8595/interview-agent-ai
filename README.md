@@ -20,50 +20,59 @@
 
 ## 📸 Screenshots
 
-<table>
-<tr>
-<td align="center">
-<b>🔐 Login Page</b><br>
-<img src="./Login_Page.png" width="250">
-</td>
+### 🔐 Login Page
 
-<td align="center">
-<b>🏠 Home Page</b><br>
-<img src="./Home_page.png" width="250">
-</td>
-</tr>
+<p align="center">
+  <img src="./Login_Page.png" alt="Login Page" width="700">
+</p>
 
-<tr>
-<td align="center">
-<b>⚙️ Interview Setup</b><br>
-<img src="./Interview_Setup_Page.png" width="250">
-</td>
+---
 
-<td align="center">
-<b>🎤 AI Interview</b><br>
-<img src="./Interview_Page.png" width="250">
-</td>
-</tr>
+### 🏠 Home Page
 
-<tr>
-<td align="center">
-<b>📊 Interview Report</b><br>
-<img src="./Report_page.png" width="250">
-</td>
+<p align="center">
+  <img src="./Home_page.png" alt="Home Page" width="700">
+</p>
 
-<td align="center">
-<b>📜 Interview History</b><br>
-<img src="./History_Page.png" width="250">
-</td>
-</tr>
+---
 
-<tr>
-<td align="center" colspan="2">
-<b>💳 Pricing & Payment</b><br>
-<img src="./Payment_Page.png" width="250">
-</td>
-</tr>
-</table>
+### ⚙️ Interview Setup
+
+<p align="center">
+  <img src="./Interview_Setup_Page.png" alt="Interview Setup" width="700">
+</p>
+
+---
+
+### 🎤 AI Interview
+
+<p align="center">
+  <img src="./Interview_Page.png" alt="Interview Page" width="700">
+</p>
+
+---
+
+### 📊 Interview Report
+
+<p align="center">
+  <img src="./Report_page.png" alt="Report Page" width="700">
+</p>
+
+---
+
+### 📜 Interview History
+
+<p align="center">
+  <img src="./History_Page.png" alt="History Page" width="700">
+</p>
+
+---
+
+### 💳 Pricing & Payment
+
+<p align="center">
+  <img src="./Payment_Page.png" alt="Payment Page" width="700">
+</p>
 
 # ✨ Features
 
